@@ -53,6 +53,8 @@ function info.process_input(command, args)
 			command = command..table.concat(args, ' ')
 		end
 		local parsed = info.parse_for_info(command)
+		-- atc(0,'Loading string: '..command)
+		-- local parsed = loadstring(command)()
 		if parsed ~= nil then
 			local msg = ':'
 			if (type(parsed) == 'table') then
@@ -60,9 +62,9 @@ function info.process_input(command, args)
 			end
 			info.print_table(parsed, command..msg)
 		else
-			atc(3,'Error: Unable to parse valid command')
+			atc(3,'Error: Unable to parse valid command from "'..command..'"')
 			--info.print_table(args, 'Args Provided')
-			atc(4,'|'..command..'|')
+			--atc(4,'|'..command..'|')
 		end
 	end
 end
@@ -103,9 +105,9 @@ function info.parse_for_info(command)
 	end
 	
 	local parts = string.split(command, '.')
-	local result = _G[parts[1]] or _G[parts[1]:lower()]
+	local result = _G
 	
-	for i = 2, #parts, 1 do
+	for i = 1, #parts, 1 do
 		if result == nil then return nil end
 		local str = parts[i]
 		if string.endswith(str, '()') then
@@ -115,7 +117,8 @@ function info.parse_for_info(command)
 			local params = string.match(str, '%([^)]+%)')
 			params = params:sub(2, #params-1)
 			local func = str:sub(1, string.find(str, '%(')-1)
-			result = result[func](params)
+			local paramlist = params:split(',')
+			result = result[func](unpack(paramlist))
 		elseif string.endswith(str, ']') then
 			local key = string.match(str, '%[.+%]')
 			key = key:sub(2, #key-1)
