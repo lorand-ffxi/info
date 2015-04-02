@@ -95,7 +95,7 @@ end
 function info.parse_for_info(command)
 	if (command:startswith('type')) then
 		local contents = command:sub(6, #command-1)
-		local parsed = parse_for_info(contents)
+		local parsed = info.parse_for_info(contents)
 		local asNum = tonumber(contents)
 		if (#contents == 0) then
 			contents = nil

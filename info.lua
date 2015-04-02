@@ -1,8 +1,8 @@
 _addon.name = 'info'
 _addon.author = 'Lorand'
 _addon.command = 'info'
-_addon.version = '1.4.3'
-_addon.lastUpdate = '2015.03.05'
+_addon.version = '1.4.5'
+_addon.lastUpdate = '2015.04.02'
 
 --[[
 	Info is a Windower addon for FFXI that is designed to allow users to view
@@ -37,6 +37,10 @@ windower.register_event('addon command', function (command,...)
 		geardump()
 	elseif command:lower() == 'item_info' then
 		item_info()
+	elseif command:lower() == 'ws_properties' then
+		ws_properties()
+	elseif command:lower() == 'ortest' then
+		orTest()
 	else
 		info.process_input(command, args)
 	end
@@ -66,6 +70,26 @@ function atc(c, msg)
 		c = 0
 	end
 	windower.add_to_chat(c, windower.to_shift_jis(msg))
+end
+
+function ws_properties()
+	atc(166,'Weaponskill properties')
+	local wses = res.weapon_skills
+	local skills = res.skills
+	for _,ws in pairs(res.weapon_skills) do
+		local name = ws.en
+		local skill = (ws.skill ~= nil) and skills[ws.skill].en or ''
+		local a,b,c = tostring(ws.skillchain_a),tostring(ws.skillchain_b),tostring(ws.skillchain_c)
+		atc(name..','..skill..','..a..','..b..','..c)
+	end
+end
+
+function orTest()
+	local a = 'original'
+	local b = b or 'replacement'
+	local c = false
+	local d = c or b
+	atc('OR Test result: '..b)
 end
 
 function item_info()
