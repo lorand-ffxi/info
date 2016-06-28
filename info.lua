@@ -11,7 +11,7 @@ _addon.lastUpdate = '2016.06.25'
 
 require('luau')
 require('lor/lor_utils')
-_libs.lor.req('functional', 'tables', 'strings', 'chat', 'exec')
+_libs.lor.req('functional', 'strings', 'tables', 'chat', 'exec')
 
 local res = require('resources')
 local packets = require('packets')
@@ -64,23 +64,35 @@ end)
 
 function ws_properties()
     atc(166,'Weaponskill properties')
-    local wses = res.weapon_skills
-    local skills = res.skills
     for _,ws in pairs(res.weapon_skills) do
-        local name = ws.en
-        local skill = (ws.skill ~= nil) and skills[ws.skill].en or ''
-        local a,b,c = tostring(ws.skillchain_a),tostring(ws.skillchain_b),tostring(ws.skillchain_c)
-        atc(name..','..skill..','..a..','..b..','..c)
+        local skill = (ws.skill ~= nil) and res.skills[ws.skill].en or ''
+        atc(',':join(ws.en, skill, ws.skillchain_a, ws.skillchain_b, ws.skillchain_c))
     end
 end
 
 
-function orTest()
-    local a = 'original'
-    local b = b or 'replacement'
-    local c = false
-    local d = c or b
-    atc('OR Test result: '..b)
+function test()
+    --return lazy_or(map(customized(lor.fn_get, equip_bags), item))
+    local tbl = {}
+    tbl.a = {}
+    tbl.b = {}
+    tbl.c = {}
+    
+    
+    
+    local kx = {'b','c'}
+    
+    local cstm = customized(lor.fn_get, tbl)
+    
+    atcs(tostring(cstm('b')))
+    
+    
+    --local filtered = table.map(kx, cstm)
+    
+    pprint(table.map(kx, cstm))
+    pprint(map(cstm, kx))
+    
+    
 end
 
 
@@ -170,7 +182,7 @@ exec_funcs = {
     ['geardump'] = geardump,
     ['item_info'] = item_info,
     ['ws_properties'] = ws_properties,
-    ['ortest'] = orTest
+    ['test'] = test
 }
 
 -----------------------------------------------------------------------------------------------------------
