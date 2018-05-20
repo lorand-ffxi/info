@@ -9,7 +9,6 @@ _addon.lastUpdate = '2016.06.25'
     data that is available to Windower from within the game.
 --]]
 
-require('luau')
 require('lor/lor_utils')
 _libs.lor.req('functional', 'strings', 'tables', 'chat', 'exec')
 
@@ -66,7 +65,7 @@ function ws_properties()
     atc(166,'Weaponskill properties')
     for _,ws in pairs(res.weapon_skills) do
         local skill = (ws.skill ~= nil) and res.skills[ws.skill].en or ''
-        atc(',':join(ws.en, skill, ws.skillchain_a, ws.skillchain_b, ws.skillchain_c))
+        atc((','):join(ws.en, skill, ws.skillchain_a, ws.skillchain_b, ws.skillchain_c))
     end
 end
 
@@ -107,10 +106,10 @@ function item_info()
             end
             
             if (irt == nil) then
-                atc('[%2s] %s | NO INFO':format(slot, tostring(iid)))
+                atc(('[%2s] %s | NO INFO'):format(slot, tostring(iid)))
             else
                 local augs = get_augment_string(itbl)
-                atc('[%2d] %s | %s | %s':format(slot, iid, irt.enl:capitalize(), tostring(augs)))
+                atc(('[%2d] %s | %s | %s'):format(slot, iid, irt.enl:capitalize(), tostring(augs)))
             end
         end
     end
